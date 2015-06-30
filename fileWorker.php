@@ -45,8 +45,33 @@ class fileWorker
 		
 	}// end of toArray 	
 
-
+	private function toTextville($plottingArray, $path)
+	{
+		echo " Starting to write to textfile <br>";
+		$newFile = $path . "prototype.txt";
+		$fh = fopen($newFile, 'w');
+		if (file_exists($newFile))
+			echo " Data is standing by for GNUPlot. <br>";
+		else
+			die(" failed to make '.txt' file. <br>");
+		$first = true;
+		for ($i = 1; $i < count($plottingArray); ++$i)
+		{
+			for ($j = 0; $j < count($plottingArray[$i]); ++$j)
+			{
+				if ($first)
+					fwrite($fh, ";");
+				else
+					$first = false;
+				fwrite($fh, $plottingArray[$i][$j]);
+					
+			}
+		}
+		fclose($fh);
+			
+		return $newFile;
 	
+	}
 }// endo fileWorker class 
 
 
