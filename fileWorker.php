@@ -45,9 +45,7 @@ class fileWorker
 		
 	}// end of toArray 	
 
-	
-	
-	
+
 	
 }// endo fileWorker class 
 
