@@ -9,20 +9,22 @@ class fileWorker
 	private $dataName;
 	private $dataAdress;
 	private $plotURL;
+	private $opsFile;
 	
 	public function __construct()
 	{
 		
 		require(site_get_config_main());
 		// establish defult directory for storage of files
-		$masterDir = $main_write_directory;
+		$masterDir = $main_write_directory . "Phase2/";
 		if(!file_exists($masterDir))
 		{
 			mkdir($masterDir);
 		}
 		$this->dataName = "data.txt";
 		$this->dataAdress = $masterDir;
-		$this->plotURL = $main_url_directory;
+		$this->plotURL = $main_url_directory . "Phase2/";
+		$this->opsFile = $masterDir;
 		
 		
 	}// end of constructor
