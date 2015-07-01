@@ -8,6 +8,7 @@ echo "Start <br>";
 // needed classes 
 require 'arrayWorker.php';
 require 'fileWorker.php';
+require 'GNU.php';
 
 // generate array from text file 
 $fileWorkerObj = new fileWorker();
@@ -16,7 +17,11 @@ $rawArray = $fileWorkerObj-> toArray();
 $arrayWorkerObj = new arrayWorker($rawArray);
 $VLA = $arrayWorkerObj ->arrayMerger($rawArray, $AllanVar, $Time);
 //Write refined data poins to .txt file so that GNUPlot may use
-
+$plotURL = $fileWorkerObj -> plotURL;
+$opsFile = $fileWorkerObj -> opsFile ."Phase2";
+$GNUObj = new GNU();
+$commands = $GNUObj ->testingDefults($plotURL, $opsFile);
+system("$GNUPLOT $opsFile"); 
 
 
 
