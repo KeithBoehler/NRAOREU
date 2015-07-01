@@ -1,5 +1,7 @@
 <?php
 
+
+
 class arrayWorker{
 	
 	private $fkHeader;
@@ -55,58 +57,39 @@ class arrayWorker{
 		return $array;
 	}
 	
-	private function plotDataPrepper($unsortedArray, $headerExists , $columnToSortby, $dependantColumn)
-{
-	$filteredData = array();
-	echo " Function is online <br>";
-	$index = 1;
-	if($headerExists == TRUE)
+	private function headerEvaluate($header)
 	{
-		echo " Enter TRUE logical barrir. (With Header) <br> ";
-		$columnToSortby[0] = 0;
-		while($index != count($columnToSortby))
-				{
-					if($columnToSortby[$index -1] < $columnToSortby[$index ])
-					{
-						$filteredData[$index][0] = $columnToSortby[$index];
-						$filteredData[$index][1] = $dependantColumn[$index];
-						$index++;
-					}// end if 
-					elseif ($columnToSortby[$index - 1] > $columnToSortby[$index ])
-					{
-						$filteredData[$index][0] = " ";
-						$filteredData[$index][1] = " ";
-						$index++;
-					}// end else if
-					else
-					{
-						die(" Logic ERROR above. (With Header) <br>"); 
-					}	
-				}// end while 
-	}// end of if for the existance of header 
-	else 
+		$headerValue;
+		if ($header == TRUE)
+			return $headerValue = 1;
+		elseif($header != TRUE)
+			return $headerValue = 0;
+		else
+			die("ERROR: existance of header is undetermined. ");
+	}// end of headerExist
+	
+	public function arrayMerger($unsortedArray, $dependantColumn, $independantColumn, $headerExist = TRUE)
 	{
-		echo " Enter Alternative. (No Header) ";
-		while ($index != count($unsortedArray[$columnToSortby]))
+		$headerValue = headerEvaluate($headerExist);
+		$filteredData = array();
+		$index = 0;
+		while ($index != count($independantColumn))
 		{
-			if ($columnToSortby[$index] < $columnToSortby[$index + 1])
+			if ($independantColumn[$index+$headerValue] < $independantColumn[$index+$headerValue+1])
 			{
-				$filteredData[$index][0] = $columnToSortby[$index];
-				$filteredData[0][$index] = $dependantColumn[$index];
-				$index++;
-			}// end if
-			elseif ($columnToSortby[$index] > $columnToSortby[$index + 1])
+				$filteredData[$index][0] = $independantColumn[$index];
+				$filteredData[$index][1] = $dependantColumn[$index];
+			}
+			elseif ($independantColumn[$index+$headerValue] > $independantColumn[$index+$headerValue+1])
 			{
-				$filteredData[$index][0] = "\r\n";
-				$filteredData[0][$index] = "\r\n";
-				$index++;
-			}// end else if
+				$filteredData[$index][0] = " ";
+				$filteredData[$index][1] = "  ";
+			}
 			else 
-				die(" Logic ERROR above. (No Header) ");
-		}// end while 
-	}// if no header 
-	return $filteredData;
-}// end of sorter 
+				die("ERROR: Could not fill array. Malfunction in ArrayWorker Class arrayMerger mehtod");
+			$index++;
+		}// end of while loop
+	}// end of arrayMerger
 	
 	
 }// end of class
