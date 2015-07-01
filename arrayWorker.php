@@ -17,21 +17,21 @@ class arrayWorker{
 	public function __construct($rawData)
 	{
 		// gather arrays that i may need
-		$this->fkHeader = array_column($rawData, 0);
-		$this->fkFacility = array_column($rawData, 1);
-		$this->TS = array_column($rawData, 2);
-		$this->freqLo = array_column($rawData, 3);
-		$this->Pol = array_column($rawData, 4);
-		$this->SB = array_column($rawData, 5);
-		$this->Time = array_column($rawData, 6); // this one for sure needed
-		$this->AllanVar = array_column($rawData, 7); // this one is for sure needed
+		$this->fkHeader = $this->arrayColumn($rawData, 0);
+		$this->fkFacility = $this->arrayColumn($rawData, 1);
+		$this->TS = $this->arrayColumn($rawData, 2);
+		$this->freqLo = $this->arrayColumn($rawData, 3);
+		$this->Pol = $this->arrayColumn($rawData, 4);
+		$this->SB = $this->arrayColumn($rawData, 5);
+		$this->Time = $this->arrayColumn($rawData, 6); // this one for sure needed
+		$this->AllanVar = $this->arrayColumn($rawData, 7); // this one is for sure needed
 		
 		
 		
 	}// end constructor
 	
 	
-	private function array_column(array $input, $columnKey, $indexKey = null) {
+	private function arrayColumn(array $input, $columnKey, $indexKey = null) {
 		// http://stackoverflow.com/questions/27422640/alternate-to-array-column <--- Source
 		$array = array();
 		foreach ($input as $value) {
@@ -91,6 +91,16 @@ class arrayWorker{
 		}// end of while loop
 	}// end of arrayMerger
 	
+	
+	public function  getTime()
+	{
+		return $this->Time;
+	}// end of get time
+	
+	public function getAllanVar()
+	{
+		return $this->AllanVar;
+	}
 	
 }// end of class
 
