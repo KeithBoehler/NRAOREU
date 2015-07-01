@@ -72,7 +72,19 @@ class fileWorker
 			
 		return $newFile;
 	
+	}// end of toTextbille 
+	
+	private function namesGenerator($base)
+	{
+		$timeStamp = time();
+		return $string = $base . $timeStamp;
+	}// end of GNUplotNames
+	
+	public function GNUPlotScrip($adress)
+	{
+		$txtName = 
 	}
+	
 }// endo fileWorker class 
 
 
