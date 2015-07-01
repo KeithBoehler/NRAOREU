@@ -14,7 +14,7 @@ class fileWorker
 		
 		require(site_get_config_main());
 		// establish defult directory for storage of files
-		$masterDir = $main_write_directory . 'Phase2/';
+		$masterDir = $main_write_directory;
 		if(!file_exists($masterDir))
 		{
 			mkdir($masterDir);
@@ -22,9 +22,10 @@ class fileWorker
 		$this->dataName = "data.txt";
 		$this->dataAdress = $masterDir;
 		
+		
 	}// end of constructor
 	
-	private function toArray()
+	public function toArray()
 	{
 		$rawHandel = $this->dataAdress . $this-> dataName;
 		$rawArray = array();
@@ -40,12 +41,12 @@ class fileWorker
 			fclose($f);			
 		}
 		else 
-			die("ERROR: file does not exist ->" . $rawHandel);
+			die("ERROR [fileWorker.php]: file does not exist ->" . $rawHandel . "<br>");
 		return $rawArray;
 		
 	}// end of toArray 	
 
-	private function toTextville($plottingArray, $path)
+	public function toTextville($plottingArray, $path)
 	{
 		echo " Starting to write to textfile <br>";
 		$newFile = $path . "prototype.txt";
