@@ -80,10 +80,27 @@ class fileWorker
 		return $string = $base . $timeStamp;
 	}// end of GNUplotNames
 	
-	public function GNUPlotScrip($adress)
+	public function toTextville($adress, $plottingArray)
 	{
-		$txtName = 
-	}
+		$newFile = $adress . "refinedData";
+		$fh = fopen($newFile, 'w');
+		if (!file_exists($newFile))
+			die("ERORR: File not made. Class fileWorker. Method GNUPlotScrip");
+		$first = TRUE;
+		for ($i = 0; $i < count($plottingArray); ++$i)
+		{
+			for($j = 0; $j < count($plottingArray[$i]); ++$i)
+			{
+				if ($first)
+					fwrite($fh, ";");
+				else 
+					$first = FALSE;
+				fwrite($fh, $plottingArray[$i][$j]);
+			}
+		}
+		fclose($fh);
+		return $newFile;
+	}// end of toTextville
 	
 }// endo fileWorker class 
 
