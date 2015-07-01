@@ -8,6 +8,7 @@ class fileWorker
 	
 	private $dataName;
 	private $dataAdress;
+	private $plotURL;
 	
 	public function __construct()
 	{
@@ -21,6 +22,7 @@ class fileWorker
 		}
 		$this->dataName = "data.txt";
 		$this->dataAdress = $masterDir;
+		$this->plotURL = $main_url_directory;
 		
 		
 	}// end of constructor
