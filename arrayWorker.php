@@ -70,28 +70,29 @@ class arrayWorker{
 	
 	public function arrayMerger($unsortedArray, $dependantColumn, $independantColumn, $headerExist = TRUE)
 	{
-		$headerValue = headerEvaluate($headerExist);
+		$index = $this->headerEvaluate($headerExist);
 		$filteredData = array();
-		$index = 0;
-		while ($index != count($independantColumn))
+		//$index = $headerValue;
+		while ($index < (count($independantColumn)-1))
 		{
-			if ($independantColumn[$index+$headerValue] < $independantColumn[$index+$headerValue+1])
+			if ($independantColumn[$index] < $independantColumn[$index +1])
 			{
 				$filteredData[$index][0] = $independantColumn[$index];
 				$filteredData[$index][1] = $dependantColumn[$index];
 			}
-			elseif ($independantColumn[$index+$headerValue] > $independantColumn[$index+$headerValue+1])
+			elseif ($independantColumn[$index] > $independantColumn[$index+ 1])
 			{
 				$filteredData[$index][0] = " ";
 				$filteredData[$index][1] = "  ";
 			}
 			else 
-				die("ERROR: Could not fill array. Malfunction in ArrayWorker Class arrayMerger mehtod");
+				echo "ERROR";//die("ERROR: Could not fill array. Malfunction in ArrayWorker Class arrayMerger mehtod <br>");
 			$index++;
 		}// end of while loop
 	}// end of arrayMerger
 	
-	
+
+	// getters 
 	public function  getTime()
 	{
 		return $this->Time;
