@@ -15,6 +15,8 @@ $fileWorkerObj = new fileWorker();
 $rawArray = $fileWorkerObj-> toArray();
 //select data to be ploted
 $arrayWorkerObj = new arrayWorker($rawArray);
+$Time = $arrayWorkerObj->getTime();
+$AllanVar = $arrayWorkerObj->getAllanVar();
 $VLA = $arrayWorkerObj ->arrayMerger($rawArray, $AllanVar, $Time);
 //Write refined data poins to .txt file so that GNUPlot may use
 $plotURL = $fileWorkerObj -> plotURL;
