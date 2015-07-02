@@ -16,8 +16,8 @@ class fileWorker
 		
 		require(site_get_config_main());
 		// establish defult directory for storage of files
-		$masterDir = $main_write_directory . "Phase2/";
-		if(!file_exists($masterDir))
+		$masterDir = $main_write_directory;
+		if(!file_exists($masterDir))  
 		{
 			mkdir($masterDir);
 		}
@@ -45,38 +45,12 @@ class fileWorker
 			fclose($f);			
 		}
 		else 
-			die("ERROR [fileWorker.php]: file does not exist ->" . $rawHandel . "<br>");
+			die("ERROR [fileWorker.php][toArray]: file does not exist ->" . $rawHandel . "<br>");
 		return $rawArray;
 		
 	}// end of toArray 	
 
-	public function toTextville($plottingArray, $path)
-	{
-		echo " Starting to write to textfile <br>";
-		$newFile = $path . "prototype.txt";
-		$fh = fopen($newFile, 'w');
-		if (file_exists($newFile))
-			echo " Data is standing by for GNUPlot. <br>";
-		else
-			die(" failed to make '.txt' file. <br>");
-		$first = true;
-		for ($i = 1; $i < count($plottingArray); ++$i)
-		{
-			for ($j = 0; $j < count($plottingArray[$i]); ++$j)
-			{
-				if ($first)
-					fwrite($fh, ";");
-				else
-					$first = false;
-				fwrite($fh, $plottingArray[$i][$j]);
-					
-			}
-		}
-		fclose($fh);
-			
-		return $newFile;
-	
-	}// end of toTextbille 
+
 	
 	private function namesGenerator($base)
 	{
@@ -106,6 +80,16 @@ class fileWorker
 		return $newFile;
 	}// end of toTextville
 	
+public function getURL()
+{
+	return $this->plotURL;
+}
+
+public function getOperationsFile()
+{
+	return $this->opsFile;
+}
+
 }// endo fileWorker class 
 
 
