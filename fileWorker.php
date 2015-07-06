@@ -31,6 +31,7 @@ class fileWorker
 	
 	public function toArray()
 	{
+		echo "toAray <br>";
 		$rawHandel = $this->dataAdress . $this-> dataName;
 		$rawArray = array();
 		$row = array();
@@ -50,7 +51,6 @@ class fileWorker
 		
 	}// end of toArray 	
 
-
 	
 	private function namesGenerator($base)
 	{
@@ -60,14 +60,15 @@ class fileWorker
 	
 	public function toTextville($adress, $plottingArray)
 	{
-		$newFile = $adress . "refinedData";
+		echo "Starting to write <br>";
+		$newFile = $adress . "refinedData.txt";
 		$fh = fopen($newFile, 'w');
 		if (!file_exists($newFile))
 			die("ERORR: File not made. Class fileWorker. Method GNUPlotScrip");
 		$first = TRUE;
 		for ($i = 0; $i < count($plottingArray); ++$i)
 		{
-			for($j = 0; $j < count($plottingArray[$i]); ++$i)
+			for($j = 0; $j < count($plottingArray[$i]); ++$j)
 			{
 				if ($first)
 					fwrite($fh, ";");
@@ -77,18 +78,35 @@ class fileWorker
 			}
 		}
 		fclose($fh);
+		echo "data written for gnuplot <br>";
 		return $newFile;
 	}// end of toTextville
 	
-public function getURL()
-{
-	return $this->plotURL;
-}
+	
+	
+	
+// get fucntions
+	public function getURL()
+	{
+		return $this->plotURL;
+	}
 
-public function getOperationsFile()
-{
-	return $this->opsFile;
-}
+	public function getOperationsFile()
+	{
+		return $this->opsFile;
+	}
+
+	public function getAdress()
+	{
+		return $this->dataAdress;
+	}	
+	public function getRandName()
+	{
+		$b = $this->dataAdress;
+		$n = $this->namesGenerator($b);
+		return $n;
+	}
+
 
 }// endo fileWorker class 
 

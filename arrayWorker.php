@@ -88,6 +88,7 @@ class arrayWorker{
 			else 
 				echo "ERROR";//die("ERROR: Could not fill array. Malfunction in ArrayWorker Class arrayMerger mehtod <br>");
 			$index++;
+			
 		}// end of while loop
 	}// end of arrayMerger
 	
