@@ -14,24 +14,13 @@ class arrayWorker{
 	private $AllanVar;
 	private $headerExists = TRUE;
 	
-	public function __construct($rawData)
-	{
-		// gather arrays that i may need
-		$this->fkHeader = $this->arrayColumn($rawData, 0);
-		$this->fkFacility = $this->arrayColumn($rawData, 1);
-		$this->TS = $this->arrayColumn($rawData, 2);
-		$this->freqLo = $this->arrayColumn($rawData, 3);
-		$this->Pol = $this->arrayColumn($rawData, 4);
-		$this->SB = $this->arrayColumn($rawData, 5);
-		$this->Time = $this->arrayColumn($rawData, 6); // this one for sure needed
-		$this->AllanVar = $this->arrayColumn($rawData, 7); // this one is for sure needed
-		
+	public function __construct(){
 		
 		
 	}// end constructor
 	
 	
-	private function arrayColumn(array $input, $columnKey, $indexKey = null) {
+	public function arrayColumn(array $input, $columnKey, $indexKey = null) {
 		// http://stackoverflow.com/questions/27422640/alternate-to-array-column <--- Source
 		$array = array();
 		foreach ($input as $value) {
@@ -87,9 +76,9 @@ class arrayWorker{
 			}
 			else 
 				echo "ERROR";//die("ERROR: Could not fill array. Malfunction in ArrayWorker Class arrayMerger mehtod <br>");
-			$index++;
-			
+			$index++;			
 		}// end of while loop
+		return $filteredData;
 	}// end of arrayMerger
 	
 

@@ -21,17 +21,20 @@ class fileWorker
 		{
 			mkdir($masterDir);
 		}
-		$this->dataName = "data.txt";
-		$this->dataAdress = $masterDir;
-		$this->plotURL = $main_url_directory . "Phase2/";
+		// establish directory for output data 
+
+		
+		$this->dataAdress = $masterDir . "newfolder/";
+		$this->plotURL = $main_url_directory;
 		$this->opsFile = $masterDir;
 		
 		
 	}// end of constructor
 	
-	public function toArray()
+	public function toArray($dataFile, $dilimiter)
 	{
 		echo "toAray <br>";
+		$this->dataName = $dataFile;
 		$rawHandel = $this->dataAdress . $this-> dataName;
 		$rawArray = array();
 		$row = array();
@@ -41,12 +44,12 @@ class fileWorker
 			$f = fopen($rawHandel, 'r');
 			while (($row = fgets($f)) !== false)
 			{
-				$rawArray[] = explode(";", $row);
+				$rawArray[] = explode($dilimiter, $row);
 			}// end of while loop
 			fclose($f);			
 		}
 		else 
-			die("ERROR [fileWorker.php][toArray]: file does not exist ->" . $rawHandel . "<br>");
+			die("ERROR [fileWorker.php][toArray]: file does not exist >>>" . $rawHandel . "<br>");
 		return $rawArray;
 		
 	}// end of toArray 	
@@ -61,12 +64,13 @@ class fileWorker
 	public function toTextville($adress, $plottingArray)
 	{
 		echo "Starting to write <br>";
+
 		$newFile = $adress . "refinedData.txt";
 		$fh = fopen($newFile, 'w');
 		if (!file_exists($newFile))
 			die("ERORR: File not made. Class fileWorker. Method GNUPlotScrip");
 		$first = TRUE;
-		for ($i = 0; $i < count($plottingArray); ++$i)
+		for ($i = 1; $i < count($plottingArray); ++$i)
 		{
 			for($j = 0; $j < count($plottingArray[$i]); ++$j)
 			{
