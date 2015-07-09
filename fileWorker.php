@@ -31,6 +31,12 @@ class fileWorker
 		
 	}// end of constructor
 	
+	/**
+	 * 
+	 * @param string $dataFile: Name of the file that we wish to open. This is a .txt 
+	 * @param char $dilimiter: This is the instruction on how the file is organised. comma, semicolon, tab, new line, etc
+	 * @return multitype:$rawArray: The return is a multidimational array from the data that was in a .txt
+	 */
 	public function toArray($dataFile, $dilimiter)
 	{
 		echo "toAray <br>";
@@ -54,13 +60,23 @@ class fileWorker
 		
 	}// end of toArray 	
 
-	
+	/**
+	 * 
+	 * @param string $base: This is a choosen name for a file. 
+	 * @return string $string: This returned string is the name that will be used as a file name. Consistes of base name and a time stamp to diffferenciate different files 
+	 */
 	private function namesGenerator($base)
 	{
 		$timeStamp = time();
 		return $string = $base . $timeStamp;
 	}// end of GNUplotNames
 	
+	/**
+	 * 
+	 * @param unknown $adress: This is the path to a directory where our .txt file will be saved
+	 * @param unknown $plottingArray: This is the array that we wish to write to a .txt file.
+	 * @return string
+	 */
 	public function toTextville($adress, $plottingArray)
 	{
 		echo "Starting to write <br>";

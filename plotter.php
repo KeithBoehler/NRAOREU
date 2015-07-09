@@ -22,6 +22,11 @@ class plotter
 		
 	}// end constructor
 	
+	/**
+	 * 
+	 * @return string: Not needed jsut here for testing
+	 * This writes the data file needed to execute GNUPlot 
+	 */
 	public function testingDefults()
 	{
 		require(site_get_config_main());
@@ -39,9 +44,10 @@ class plotter
 		
 		
 		$plot_URL = $this->URL . $plotName;
-		echo $plot_URL . "<br>";
 		system("$GNUPLOT $opsFileAdressAndName");
+		echo $plot_URL . "<br>";
 		echo  "<img src = '$plot_URL'><br>";
+		return "Why is it not working? :'( <br>";
 	}
 	
 

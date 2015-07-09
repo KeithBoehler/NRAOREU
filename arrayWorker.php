@@ -1,6 +1,15 @@
 <?php
 
-
+/*
+ * at the begging of each function define the parameter
+ * php doc
+ * 
+ * long term average as as snsativity trick. 
+ * short term instability
+ * allan plot tells us the sort term variations and the long term amplidtude error
+ * 
+ * 
+ */
 
 class arrayWorker{
 	
@@ -19,7 +28,14 @@ class arrayWorker{
 		
 	}// end constructor
 	
-	
+	/**
+	 * @param array $input: This is a multidimentional array.
+	 * @param unknown $columnKey: This is the index of the column of intrest.
+	 * @param string $indexKey
+	 * @return boolean|multitype $array: This is a one dimentional array that used to be a member of the $input array. 
+	 * arrayColumn is a function that is meant to pull out a column from a multidimentional array 
+	 * and assigin it ti a one dimention array.
+	 */
 	public function arrayColumn(array $input, $columnKey, $indexKey = null) {
 		// http://stackoverflow.com/questions/27422640/alternate-to-array-column <--- Source
 		$array = array();
@@ -46,6 +62,14 @@ class arrayWorker{
 		return $array;
 	}
 	
+	/**
+	 * 
+	 * @param boolean $header: true or false value explaning if there is a header
+	 * @return int $headerValue: This is a value of a one or zero depending on weather there is a header
+	 * This function will evaluate a boolean and return one if there is a header or a zero if there isnt.
+	 * This is intended to supplament arrayMerger. If there is a header adding a value of one will then 
+	 * skip the header row. If there isnt adding zero does not affect the looping of rows. 
+	 */
 	private function headerEvaluate($header)
 	{
 		$headerValue;
@@ -57,6 +81,14 @@ class arrayWorker{
 			die("ERROR: existance of header is undetermined. ");
 	}// end of headerExist
 	
+	/**
+	 * 
+	 * @param unknown $unsortedArray: 
+	 * @param unknown $dependantColumn: This would be the "y axis" data
+	 * @param unknown $independantColumn: This would be the "x axis"
+	 * @param string $headerExist: This value is tedermined by the function headerEvaluate.
+	 * @return Ambigous <multitype:, string, unknown> $filteredData: This is a blank array that will be filled with the $independantColumn and $dependantColumn
+	 */
 	public function arrayMerger($unsortedArray, $dependantColumn, $independantColumn, $headerExist = TRUE)
 	{
 		$index = $this->headerEvaluate($headerExist);
