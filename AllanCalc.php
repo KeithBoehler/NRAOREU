@@ -8,12 +8,12 @@ class allanCalc {
 	private $meanOfDataSet;
 	private $tou0;
 	
-	public function __construct($data) {
-		$allanArray = array();
-		for ($i = 0; $i < count($data); ++$i) {
-			$allanArray[$i] = $this->allanVariance($data);
-		}
-		return $allanArray;
+	public function __construct() {
+// 		$allanArray = array();
+// 		for ($i = 0; $i < count($data); ++$i) {
+// 			$allanArray[$i] = $this->allanVariance($data);
+// 		}
+// 		return $allanArray;
 	}// end of constructor 
 	/**
 	 * 
@@ -21,15 +21,17 @@ class allanCalc {
 	 * @return number: allan variace 
 	 * see FEND-40.00.00.00-079-A35-PRO Page: Page 115 of 183 for more detail. 
 	 */
-	private function allanVariance($rawData) {
+	public function allanVariance($rawData) {
 		$mu = $this->average($rawData);
 		$normalizer = 1 / (2 * (count($rawData) - 1) * pow($mu, 2));
-		for ($i = 0; $i < $this->allanTime($rawData); ++$i) {
+		$sumArray = array();
+		for ($i = 0; $i < count($rawData); ++$i) {
+			// every cycle in this loop should generate one point. 
 			$organizedArray = $this->dataOrganizer($rawData, $i + 1);
-			$averageOrgArray = $this->average2($organizedArray);
-			$sum = $this->summation($averageOrgArray);
+			$averageOrgArray = $this->averageOrgArray($organizedArray);
+			$sumArray[$i] = $this->unnormalizedAVAR($averageOrgArray);
 		}
-		return $normalizer * $sum;
+	//	return $normalizer * $sum;
 		
 		// return $sum;
 		
@@ -54,7 +56,7 @@ class allanCalc {
 	 * @param unknown $rawData: Amplitude Array 
 	 * @return number: sum of the differnacfe of ith sample  and next sample squared. 
 	 */
-	private function summation($amplidudeArray) {
+	private function unnormalizedAVAR($amplidudeArray) {
 		$value = 0;
 		for ($i = 0; $i < count($amplidudeArray) - 1; ++$i) {
 			$value += pow($amplidudeArray[$i] - $amplidudeArray[$i + 1] , 2);
@@ -70,11 +72,16 @@ class allanCalc {
 	 */
 	private function dataOrganizer($oneDArray, $elements) {
 		$tree = array();
-		for ($i = 0; $i < count($oneDArray); ++$i) {
-			$value = 0;
+		$row = 0;
+		for ($i = 0; $i < count($oneDArray); $i += $elements) {
 			for ($j = 0; $j < $elements; ++$j) {
-				$tree[$i][$j] = $oneDArray[$i];
+				// here we are setting numbers that we want into sets of columns 
+				if ($i + $j < count($oneDArray))			
+					$tree[$row][$j] = $oneDArray[$i + $j];
+				else 
+					break;
 			}
+			++$row;
 		}
 		return $tree;
 	}
@@ -87,28 +94,30 @@ class allanCalc {
 	 * This is to facilitate another functions ability to average the smaller arrays  later. 
 	 * 
 	 */
-	private function average2($array) {
-		$newArray = array();
+	private function averageOrgArray($array) {
+		$averagedRows = array();
 		for ($i = 0; $i < count($array); ++$i) {
+			// here we are resetting the value of previuse rows sum and setting the average
 			$value = 0;
 			for ($j = 0; $j < count($array[$i]); ++$j) {
+				// here we are summing the elements in a row
 				$value += $array[$i][$j];
 			}
-			$newArray[$i] = $value / count($array[$i]);
+			$averagedRows[$i] = $value / count($array[$i]);
 		}
-		return $newArray;
+		return $averagedRows;
 	}
 	
-	/**
-	 * 
-	 * @param unknown $data: original data array 
-	 * @return number: This is the number of increments that must happeb to go from 50 ms to 300 ms. 
-	 * If we are to plot so many points in 300s, then 300 over then number of points 
-	 * will give the increment from 50 to 300. 
-	 */
-	private function allanTime($data) {
-		return 300 / count($data);
-	}
+// 	/**
+// 	 * 
+// 	 * @param unknown $data: original data array 
+// 	 * @return number: This is the number of increments that must happeb to go from 50 ms to 300 ms. 
+// 	 * If we are to plot so many points in 300s, then 300 over then number of points 
+// 	 * will give the increment from 50 to 300. 
+// 	 */
+// 	private function allanTime($data) {
+// 		return 300 / count($data);
+// 	}
 	 
 
 } // end of allan calculator class 
