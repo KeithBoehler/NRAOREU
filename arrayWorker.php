@@ -13,14 +13,7 @@
 
 class arrayWorker{
 	
-	private $fkHeader;
-	private $fkFacility;
-	private $TS;
-	private $freqLo;
-	private $Pol;
-	private $SB;
-	private $Time;
-	private $AllanVar;
+
 	private $headerExists = TRUE;
 	
 	public function __construct(){
@@ -83,13 +76,16 @@ class arrayWorker{
 	
 	/**
 	 * 
-	 * @param unknown $unsortedArray: 
+	 * 
 	 * @param unknown $dependantColumn: This would be the "y axis" data
 	 * @param unknown $independantColumn: This would be the "x axis"
 	 * @param string $headerExist: This value is tedermined by the function headerEvaluate.
 	 * @return Ambigous <multitype:, string, unknown> $filteredData: This is a blank array that will be filled with the $independantColumn and $dependantColumn
+	 * This is a function that will  take two one dimentional arrays and merge them into one two dimentional array. This function has the assumption that data 
+	 * in the array has a header. If there is no header add additional parameter of 'FALSE' to the headerExist paramater. 
+	 * 
 	 */
-	public function arrayMerger($unsortedArray, $dependantColumn, $independantColumn, $headerExist = TRUE)
+	public function arrayMerger($dependantColumn, $independantColumn, $headerExist = TRUE)
 	{
 		$index = $this->headerEvaluate($headerExist);
 		$filteredData = array();
@@ -114,17 +110,6 @@ class arrayWorker{
 	}// end of arrayMerger
 	
 
-	// getters 
-	public function  getTime()
-	{
-		return $this->Time;
-	}// end of get time
-	
-	public function getAllanVar()
-	{
-		return $this->AllanVar;
-	}
-	
 }// end of class
 
 
