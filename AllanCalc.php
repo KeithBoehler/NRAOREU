@@ -2,18 +2,16 @@
 
 class allanCalc {
 	// variabesl 
-	private $allanVariance;
-	private $integrationTime;
-	private $numberOfSamples;
-	private $meanOfDataSet;
+	private $allanVarianceArray;
+	private $integrationTimeArray;
+	private $N; // Number of data samples (Raw)
+	private $mu; // mean of data set
 	private $tou0;
+	private $minTime;
+	private $maxTime;
 	
 	public function __construct() {
-// 		$allanArray = array();
-// 		for ($i = 0; $i < count($data); ++$i) {
-// 			$allanArray[$i] = $this->allanVariance($data);
-// 		}
-// 		return $allanArray;
+
 	}// end of constructor 
 	/**
 	 * 
@@ -22,19 +20,19 @@ class allanCalc {
 	 * see FEND-40.00.00.00-079-A35-PRO Page: Page 115 of 183 for more detail. 
 	 */
 	public function allanVariance($rawData) {
-		$mu = $this->average($rawData);
+		$this->$mu = $this->average($rawData);
 		$normalizer = 1 / (2 * (count($rawData) - 1) * pow($mu, 2));
 		$sumArray = array();
 		for ($i = 0; $i < count($rawData); ++$i) {
 			// every cycle in this loop should generate one point. 
 			$organizedArray = $this->dataOrganizer($rawData, $i + 1);
 			$averageOrgArray = $this->averageOrgArray($organizedArray);
-			$sumArray[$i] = $this->unnormalizedAVAR($averageOrgArray);
+			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageOrgArray);
 		}
-	//	return $normalizer * $sum;
-		
-		// return $sum;
-		
+		return $sumArray;	
+		// fill datafeilds
+		$this->allanVarianceArray = $sumArray;
+		$this->N = count($rawData);
 	}// end of allan variace 
 	
 	// Supporting Math Functions 
@@ -107,17 +105,48 @@ class allanCalc {
 		}
 		return $averagedRows;
 	}
+	/**
+	 * 
+	 * @param unknown $minTime: lower x axis limit
+	 * @param unknown $maxTime: upper x axis limit
+	 * If the lower and upper time limit are known, then the a time array may be calulated based on 
+	 * this and the number of sampels that there are.
+	 */
+	public function timeGenerator($minTime, $maxTime) {
+		$timeIncrement = $maxTime / $this->N;
+		for ($i = 0; $i < count($this->allanVarianceArray); ++$i) {
+			// Each cycle should generate one value of time. Starting from min time. 
+			$this->integrationTimeArray[$i] = $minTime;
+			$minTime += $timeIncrement; 
+		}
+		return $this->integrationTimeArray;
+		// fill data feilds 
+		$this->maxTime = $maxTime;
+		$this->minTime = $minTime;
+	}
 	
-// 	/**
-// 	 * 
-// 	 * @param unknown $data: original data array 
-// 	 * @return number: This is the number of increments that must happeb to go from 50 ms to 300 ms. 
-// 	 * If we are to plot so many points in 300s, then 300 over then number of points 
-// 	 * will give the increment from 50 to 300. 
-// 	 */
-// 	private function allanTime($data) {
-// 		return 300 / count($data);
-// 	}
+	// getter fucntions 
+	
+	private function getAllanArray() {
+		return $this->allanVarianceArray;
+	}
+	
+	public function getTimeArray() {
+		return $this->integrationTimeArray;
+	}
+	
+	public function getTou0() {
+		return $this->tou0;
+	}
+	
+	public function getMaxTime() {
+		return $this->maxTime;
+	}
+	
+	public function getMinTime() {
+		return $this->minTime;
+	}
+	
 	 
 
 } // end of allan calculator class 
