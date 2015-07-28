@@ -1,5 +1,5 @@
 <?php
-echo "Start lol <br>";
+echo "Start <br>";
 
 /*
  *  This is the master php file that will be calling on the classes 
@@ -11,29 +11,31 @@ echo "Start lol <br>";
 require 'arrayWorker.php';
 require 'fileWorker.php';
 require 'plotter.php';
-// Gathering of the numbers to compute allan variacne 
+require 'AllanCalc.php';
+// Objects  
 $fileWorkerObj = new fileWorker();
+$arrayWorkerObj = new arrayWorker();
+$allanCalculatorObj = new allanCalc();
+// Gather data 
 $IFOFile = "IFO.txt";
 $IFODimiliter = "\t";
 $IFOArray = $fileWorkerObj->toArray($IFOFile, $IFODimiliter);
-$arrayGetterObj = new arrayWorker();
 $amplidudeColumnIndex = 1; // so that later we can make more dynamic 
 $amplitudeArray = $arrayGetterObj->arrayColumn($IFOArray, $amplidudeColumnIndex);
-echo "Hey there <br>";
-
-
-
+// crunch numbers with allanCalc
+$allanVarArray = $allanCalculatorObj->allanVariance($amplitudeArray);
+$timeArray = $allanCalculatorObj->timeGenerator(0.05, 300);
+$xyArray = $arrayWorkerObj->arrayMerger($allanVarArray, $timeArray, FALSE);
 
 /*
  * This part was derived from the non object code writing4.php
  */
-
-// // generate array from text file 
+// generate array from text file 
 // echo "to Arrystan <br>";
 // $masterDir = $fileWorkerObj->getAdress();
 // $rawArray = $fileWorkerObj-> toArray();
 
-// //select data to be ploted
+// // select data to be ploted
 // echo "select data to be plotted <br>";
 // $arrayWorkerObj = new arrayWorker($rawArray);
 // $Time = $arrayWorkerObj->getTime();
@@ -44,11 +46,11 @@ echo "Hey there <br>";
 
 // $plottingDataTxt = $fileWorkerObj->toTextville($masterDir, $VLA);
 
-// //Write refined data poins to .txt file so that GNUPlot may use
+// // Write refined data poins to .txt file so that GNUPlot may use
 // echo "begin plotting <br>";
 // $GNUObj = new plotter();
 // echo  $GNUObj ->testingDefults();
 
-echo "End";
+echo "End <br>";
 
 ?>
