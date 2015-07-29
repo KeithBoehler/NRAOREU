@@ -21,10 +21,10 @@ $IFOFile = "IFO.txt";
 $IFODimiliter = "\t";
 $IFOArray = $fileWorkerObj->toArray($IFOFile, $IFODimiliter);
 $amplidudeColumnIndex = 1; // so that later we can make more dynamic 
-$amplitudeArray = $arrayGetterObj->arrayColumn($IFOArray, $amplidudeColumnIndex);
+$amplitudeArray = $arrayWorkerObj->arrayColumn($IFOArray, $amplidudeColumnIndex);
 // crunch numbers with allanCalc
 $allanVarArray = $allanCalculatorObj->allanVariance($amplitudeArray);
-$timeArray = $allanCalculatorObj->timeGenerator(0.05, 300);
+$timeArray = $allanCalculatorObj->getTimeArray(); //$allanCalculatorObj->timeGenerator(0.05, 300);
 $xyArray = $arrayWorkerObj->arrayMerger($allanVarArray, $timeArray, FALSE);
 
 /*

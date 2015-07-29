@@ -20,7 +20,7 @@ class allanCalc {
 	 * see FEND-40.00.00.00-079-A35-PRO Page: Page 115 of 183 for more detail. 
 	 */
 	public function allanVariance($rawData) {
-		$this->$mu = $this->average($rawData);
+		$mu = $this->average($rawData);
 		$normalizer = 1 / (2 * (count($rawData) - 1) * pow($mu, 2));
 		$sumArray = array();
 		for ($i = 0; $i < count($rawData); ++$i) {
@@ -33,6 +33,7 @@ class allanCalc {
 		// fill datafeilds
 		$this->allanVarianceArray = $sumArray;
 		$this->N = count($rawData);
+		$ininsiate = $this->timeGenerator();
 	}// end of allan variace 
 	
 	// Supporting Math Functions 
@@ -112,14 +113,14 @@ class allanCalc {
 	 * If the lower and upper time limit are known, then the a time array may be calulated based on 
 	 * this and the number of sampels that there are.
 	 */
-	public function timeGenerator($minTime, $maxTime) {
+	private function timeGenerator($minTime = 0.05, $maxTime = 300) {
 		$timeIncrement = $maxTime / $this->N;
 		for ($i = 0; $i < count($this->allanVarianceArray); ++$i) {
 			// Each cycle should generate one value of time. Starting from min time. 
 			$this->integrationTimeArray[$i] = $minTime;
 			$minTime += $timeIncrement; 
 		}
-		return $this->integrationTimeArray;
+		$this->integrationTimeArray;
 		// fill data feilds 
 		$this->maxTime = $maxTime;
 		$this->minTime = $minTime;
@@ -127,7 +128,7 @@ class allanCalc {
 	
 	// getter fucntions 
 	
-	private function getAllanArray() {
+	public function getAllanArray() {
 		return $this->allanVarianceArray;
 	}
 	
