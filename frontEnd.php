@@ -1,41 +1,21 @@
 <?php
 require 'fileWorker.php';
 
-class frontEnd {
-	
-	private $name;
-	private $tempName;
-	
-	public function __construct() {
-		$this->$name = $_FILES['files']['names'];
-		$this->tempName = $_FILES['files']['tempName'];
-		$this->didSubmit();
+$fileName = $_FILES['file']['name'];
+$tmp_name = $_FILES['file']['tmp_name'];
+
+if (isset($fileName)) {
+	if (!empty($fileName)) {
+		echo "OK. <br>";
+		echo $fileName . "<br>";
+		echo $tmp_name . "<br>";
 	}
-	
-	
-	/**
-	 * This is simply to verfy that a file was submited. 
-	 */
-	private function didSubmit() {
-		if (isset($this->name)) {
-			if (!empty($this->name)) {
-				echo "File uploaded.";
-			}
-			else {
-				echo "Please choose a file. ";
-			}
-		}
-	}
-	
-	
+	else 
+		echo "Please choose a file. ";
 }
-
-$f = new frontEnd();
-
 ?>
 
-<form action="frontEnd.php" method="POST" enctype="multipart/form-data">
-	<input type="files" name="files"><br><br> 
-	<input type="submit" value="Submit"> 
+<form action = "frontEnd.php" method ="POST" enctype = "multipart/form-data">
+	<input type = "file" name = "file"><br><br>
+	<input type = "submit" value = "Submit">
 </form>
-	
