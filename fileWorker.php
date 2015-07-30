@@ -8,7 +8,7 @@ class fileWorker
 	
 	private $dataName;
 	private $uploadAdress;
-	private $saveAdress;
+	private $outPutAdress;
 	private $plotURL;
 	private $opsFile;
 	
@@ -22,7 +22,7 @@ class fileWorker
 			mkdir($masterDir);
 			
 		$this->uploadAdress= $masterDir . "uploads/"; // here is where user input will be placed 
-		$this->saveAdress = $masterDir . "outputs/"; // here is where final files will be placed 
+		$this->outPutAdress = $masterDir . "outputs/"; // here is where final files will be placed 
 		$this->plotURL = $main_url_directory;
 		$this->opsFile = $masterDir;
 		
@@ -39,7 +39,7 @@ class fileWorker
 	{
 		echo "toAray <br>";
 		$this->dataName = $dataFile;
-		$rawHandel = $this->dataAdress . $this-> dataName;
+		$rawHandel = $this->uploadAdress . $this-> dataName;
 		$rawArray = array();
 		$row = array();
 		if (file_exists($rawHandel))
@@ -100,7 +100,9 @@ class fileWorker
 		return $newFile;
 	}// end of toTextville
 	
-	
+	public function uploader() {
+		
+	}
 	
 	
 // get fucntions
