@@ -20,14 +20,14 @@ class allanCalc {
 	 * see FEND-40.00.00.00-079-A35-PRO Page: Page 115 of 183 for more detail. 
 	 */
 	public function allanVariance($rawData) {
-		$this->$mu = $this->average($rawData);
+		$mu = $this->average($rawData);
 		$normalizer = 1 / (2 * (count($rawData) - 1) * pow($mu, 2));
 		$sumArray = array();
 		for ($i = 0; $i < count($rawData); ++$i) {
 			// every cycle in this loop should generate one point. 
 			$organizedArray = $this->dataOrganizer($rawData, $i + 1);
 			$averageOrgArray = $this->averageOrgArray($organizedArray);
-			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageOrgArray);
+			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageOrgArray); // This makes the normalized AllanVar
 		}
 		return $sumArray;	
 		// fill datafeilds
