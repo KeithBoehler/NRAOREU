@@ -29,10 +29,11 @@ class allanCalc {
 			$averageOrgArray = $this->averageOrgArray($organizedArray);
 			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageOrgArray); // This makes the normalized AllanVar
 		}
-		return $sumArray;	
 		// fill datafeilds
 		$this->allanVarianceArray = $sumArray;
 		$this->N = count($rawData);
+		$ininsiate = $this->timeGenerator();
+		return $sumArray;
 	}// end of allan variace 
 	
 	// Supporting Math Functions 
@@ -112,22 +113,21 @@ class allanCalc {
 	 * If the lower and upper time limit are known, then the a time array may be calulated based on 
 	 * this and the number of sampels that there are.
 	 */
-	public function timeGenerator($minTime, $maxTime) {
+	private function timeGenerator($minTime = 0.05, $maxTime = 300) {
 		$timeIncrement = $maxTime / $this->N;
 		for ($i = 0; $i < count($this->allanVarianceArray); ++$i) {
 			// Each cycle should generate one value of time. Starting from min time. 
 			$this->integrationTimeArray[$i] = $minTime;
 			$minTime += $timeIncrement; 
 		}
-		return $this->integrationTimeArray;
-		// fill data feilds 
+		$this->integrationTimeArray;
 		$this->maxTime = $maxTime;
 		$this->minTime = $minTime;
 	}
 	
 	// getter fucntions 
 	
-	private function getAllanArray() {
+	public function getAllanArray() {
 		return $this->allanVarianceArray;
 	}
 	

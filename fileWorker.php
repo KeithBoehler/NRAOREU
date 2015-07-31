@@ -7,7 +7,8 @@ class fileWorker
 {
 	
 	private $dataName;
-	private $dataAdress;
+	private $uploadAdress;
+	private $outPutAdress;
 	private $plotURL;
 	private $opsFile;
 	
@@ -15,16 +16,13 @@ class fileWorker
 	{
 		
 		require(site_get_config_main());
-		// establish defult directory for storage of files
-		$masterDir = $main_write_directory;
+		// establish defult directories 
+		$masterDir = $main_write_directory; // this will be the "root Dir"
 		if(!file_exists($masterDir))  
-		{
 			mkdir($masterDir);
-		}
-		// establish directory for output data 
-
-		
-		$this->dataAdress = $masterDir . "newfolder/";
+			
+		$this->uploadAdress= $masterDir . "uploads/"; // here is where user input will be placed 
+		$this->outPutAdress = $masterDir . "outputs/"; // here is where final files will be placed 
 		$this->plotURL = $main_url_directory;
 		$this->opsFile = $masterDir;
 		
@@ -41,7 +39,7 @@ class fileWorker
 	{
 		echo "toAray <br>";
 		$this->dataName = $dataFile;
-		$rawHandel = $this->dataAdress . $this-> dataName;
+		$rawHandel = $this->uploadAdress . $this-> dataName;
 		$rawArray = array();
 		$row = array();
 		if (file_exists($rawHandel))
@@ -102,26 +100,27 @@ class fileWorker
 		return $newFile;
 	}// end of toTextville
 	
-	
+	public function uploader() {
+		
+	}
 	
 	
 // get fucntions
-	public function getURL()
-	{
+	public function getURL() {
 		return $this->plotURL;
 	}
 
-	public function getOperationsFile()
-	{
+	public function getOperationsFile()	{
 		return $this->opsFile;
 	}
 
-	public function getAdress()
-	{
-		return $this->dataAdress;
+	public function getSaveAdress()	{
+		return $this->saveAdress;
 	}	
-	public function getRandName()
-	{
+	public function getUploadAdress() {
+		return $this->uploadAdress;
+	}
+	public function getRandName() {
 		$b = $this->dataAdress;
 		$n = $this->namesGenerator($b);
 		return $n;
