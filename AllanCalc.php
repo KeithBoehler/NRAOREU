@@ -29,11 +29,11 @@ class allanCalc {
 			$averageOrgArray = $this->averageOrgArray($organizedArray);
 			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageOrgArray);
 		}
-		return $sumArray;	
 		// fill datafeilds
 		$this->allanVarianceArray = $sumArray;
 		$this->N = count($rawData);
 		$ininsiate = $this->timeGenerator();
+		return $sumArray;
 	}// end of allan variace 
 	
 	// Supporting Math Functions 
@@ -121,7 +121,6 @@ class allanCalc {
 			$minTime += $timeIncrement; 
 		}
 		$this->integrationTimeArray;
-		// fill data feilds 
 		$this->maxTime = $maxTime;
 		$this->minTime = $minTime;
 	}
