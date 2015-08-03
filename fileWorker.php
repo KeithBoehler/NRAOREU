@@ -40,7 +40,7 @@ class fileWorker
 	 * @param char $dilimiter: This is the instruction on how the file is organised. comma, semicolon, tab, new line, etc
 	 * @return multitype:$rawArray: The return is a multidimational array from the data that was in a .txt
 	 */
-	public function toArray($dilimiter) {
+	public function toArray($delimiter) {
 		echo "toAray <br>";
 		$rawHandel = $this->uploadAdress . $this-> dataName;
 		$rawArray = array();
@@ -51,7 +51,7 @@ class fileWorker
 			$f = fopen($rawHandel, 'r');
 			while (($row = fgets($f)) !== false)
 			{
-				$rawArray[] = explode($dilimiter, $row);
+				$rawArray[] = explode($delimiter, $row);
 			}// end of while loop
 			fclose($f);			
 		}

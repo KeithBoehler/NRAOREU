@@ -18,9 +18,15 @@ require 'AllanCalc.php';
 if (isset($_FILES['file'])) {
 	$fileName = $_FILES['file']['name'];
 	$tmpName = $_FILES['file']['tmp_name'];
-	$delimiter = $_REQUEST['delimiter'];
+  	$delimiter = $_REQUEST['delimiter'];
+  	/*
+  	 * HTML does not return a clean tab for PHP to work with. Will give something like \\t.
+  	 *  This makes fileWorker.php's toArray() explode very sad.
+  	 */
+	if ($delimiter == "tab")
+  		$delimiter = "\t"; // DO NOT MESS!!
 }
-
+echo $delimiter;
 if (isset($fileName)) {
 	if (!empty($fileName)) {
 		// Objects
@@ -53,13 +59,13 @@ echo "End <br><br><br>";
 	<form action = "master.php" method ="POST" enctype = "multipart/form-data">
 		<input type = "file" name = "file"><br><br>
 		<select name = "delimiter">
-			<option value = "\t">Tab</option>
+			<option value = "tab">Tab</option>
 			<option value = ";"> Semi Colon</option>
 			<option value = ","> Comma</option>
 			<option value = "."> Period</option>
 			<option value = "?"> Question Mark</option>
 			<option value = "!"> Exclamation Point</option>
-			<option value = "\r\n"> New Line</option>			
+			<option value = "\r\n"> New Line</option>
 			<option value = "die('Virus Installed')"> Questionable</option>
 			</select><br><br>
 			
