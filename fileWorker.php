@@ -12,19 +12,24 @@ class fileWorker
 	private $plotURL;
 	private $opsFile;
 	
-	public function __construct()
-	{
+	public function __construct($dataFile, $tmpName) {
 		
 		require(site_get_config_main());
 		// establish defult directories 
-		$masterDir = $main_write_directory; // this will be the "root Dir"
-		if(!file_exists($masterDir))  
-			mkdir($masterDir);
-			
+		$masterDir = $main_write_directory . "master/"; // this will be the "root Dir"
 		$this->uploadAdress= $masterDir . "uploads/"; // here is where user input will be placed 
 		$this->outPutAdress = $masterDir . "outputs/"; // here is where final files will be placed 
 		$this->plotURL = $main_url_directory;
 		$this->opsFile = $masterDir;
+		// make if dir does not exits 
+		if(!file_exists($masterDir) || !file_exists($this->uploadAdress) || !file_exists($this->outPutAdress)) {
+			mkdir($masterDir);
+			mkdir($this->outPutAdress);
+			mkdir($this->uploadAdress);
+		}
+		// upload the file that will be plotted
+		$this->dataName = $dataFile;
+		move_uploaded_file($tmpName, $this->uploadAdress . $dataFile);
 		
 		
 	}// end of constructor
@@ -35,10 +40,8 @@ class fileWorker
 	 * @param char $dilimiter: This is the instruction on how the file is organised. comma, semicolon, tab, new line, etc
 	 * @return multitype:$rawArray: The return is a multidimational array from the data that was in a .txt
 	 */
-	public function toArray($dataFile, $dilimiter)
-	{
+	public function toArray($dilimiter) {
 		echo "toAray <br>";
-		$this->dataName = $dataFile;
 		$rawHandel = $this->uploadAdress . $this-> dataName;
 		$rawArray = array();
 		$row = array();
@@ -100,9 +103,6 @@ class fileWorker
 		return $newFile;
 	}// end of toTextville
 	
-	public function uploader() {
-		
-	}
 	
 	
 // get fucntions

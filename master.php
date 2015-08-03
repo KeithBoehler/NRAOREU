@@ -11,23 +11,24 @@ require 'arrayWorker.php';
 require 'fileWorker.php';
 require 'plotter.php';
 require 'AllanCalc.php';
-// Objects  
-$fileWorkerObj = new fileWorker();
-$arrayWorkerObj = new arrayWorker();
-$allanCalculatorObj = new allanCalc();
 
 // Gather data 
 // $IFOFile = "IFO.txt";
 // $IFODimiliter = "\t";
 if (isset($_FILES['file'])) {
 	$fileName = $_FILES['file']['name'];
-	$tmp_name = $_FILES['file']['tmp_name'];
+	$tmpName = $_FILES['file']['tmp_name'];
 	$delimiter = $_REQUEST['delimiter'];
 }
 
 if (isset($fileName)) {
 	if (!empty($fileName)) {
-		$IFOArray = $fileWorkerObj->toArray($fileName, $delimiter);
+		// Objects
+		$fileWorkerObj = new fileWorker($fileName, $tmpName);
+		$arrayWorkerObj = new arrayWorker();
+		$allanCalculatorObj = new allanCalc();
+		//
+		$IFOArray = $fileWorkerObj->toArray($delimiter);
 		$amplidudeColumnIndex = 1; // so that later we can make more dynamic
 		$amplitudeArray = $arrayWorkerObj->arrayColumn($IFOArray, $amplidudeColumnIndex);
 		
@@ -44,7 +45,7 @@ if (isset($fileName)) {
 
 
 
-echo "End <br>";
+echo "End <br><br><br>";
 ?>
 
 
