@@ -26,7 +26,7 @@ if (isset($_FILES['file'])) {
 	if ($delimiter == "tab")
   		$delimiter = "\t"; // DO NOT MESS!!
 }
-echo $delimiter;
+
 if (isset($fileName)) {
 	if (!empty($fileName)) {
 		// Objects

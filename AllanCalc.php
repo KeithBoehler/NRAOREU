@@ -6,7 +6,7 @@ class allanCalc {
 	private $integrationTimeArray;
 	private $N; // Number of data samples (Raw)
 	private $mu; // mean of data set
-	private $tou0;
+	private $tou0 = 0.05;
 	private $minTime;
 	private $maxTime;
 	
@@ -23,11 +23,23 @@ class allanCalc {
 		$mu = $this->average($rawData);
 		$normalizer = 1 / (2 * (count($rawData) - 1) * pow($mu, 2));
 		$sumArray = array();
-		for ($i = 0; $i < count($rawData); ++$i) {
+		$maxK = 300 / $this->tou0;
+		if ($maxK > count($rawData))
+			$maxK = count($rawData);
+		//$averageArray = $this->ultimateAverage($rawData, $maxK);
+		//die("your goodish");
+		for ($i = 0; $i < $maxK; ++$i) {
+			$start = microtime(true);
 			// every cycle in this loop should generate one point. 
-			$organizedArray = $this->dataOrganizer($rawData, $i + 1);
-			$averageOrgArray = $this->averageOrgArray($organizedArray);
-			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageOrgArray); // This makes the normalized AllanVar
+			//$organizedArray = $this->dataOrganizer($rawData, $i + 1);
+			//$averageOrgArray = $this->averageOrgArray($organizedArray);
+			
+			$averageArray = $this->ultimateAverage($rawData, $i + 1);
+			
+			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageArray); // This makes the normalized AllanVar
+			$time_elapsed_secs = microtime(true) - $start;
+			//echo $time_elapsed_secs . "<br>";
+			echo memory_get_usage(). "\t" . $time_elapsed_secs . "\t" .  $i ."<br>";			
 		}
 		// fill datafeilds
 		$this->allanVarianceArray = $sumArray;
@@ -35,6 +47,23 @@ class allanCalc {
 		$ininsiate = $this->timeGenerator();
 		return $sumArray;
 	}// end of allan variace 
+	
+	private function ultimateAverage($dataArray, $k) {
+		$averageArray = array();
+		$c = count($dataArray);
+		for ($i = 0; $i < $c; $i += $k) {
+			$sum = 0;
+			$n = 0;
+			for($j = 0; $j < $k; ++$j) {
+				if ($i + $j < $c) {
+					++$n;
+					$sum += $dataArray[$i + $j];
+				}
+			}
+			$averageArray[] = $sum / $n;
+		} 
+		return $averageArray;
+	}
 	
 	// Supporting Math Functions 
 	/**
