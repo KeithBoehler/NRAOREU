@@ -18,7 +18,7 @@ $arrayWorkerObj = new arrayWorker();
 $allanCalculatorObj = new allanCalc();
 
 // Gather data 
-$IFOFile = "IFO.txt";
+$IFOFile = "IFO.txt";//"IF2-ATT15dB-Term_at_EQ-3dB-ATT.txt";
 $IFODimiliter = "\t";
 $IFOArray = $fileWorkerObj->toArray($IFOFile, $IFODimiliter);
 $amplidudeColumnIndex = 1; // so that later we can make more dynamic 
