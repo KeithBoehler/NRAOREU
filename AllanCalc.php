@@ -27,7 +27,7 @@ class allanCalc {
 			// every cycle in this loop should generate one point. 
 			$organizedArray = $this->dataOrganizer($rawData, $i + 1);
 			$averageOrgArray = $this->averageOrgArray($organizedArray);
-			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageOrgArray);
+			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageOrgArray); // This makes the normalized AllanVar
 		}
 		// fill datafeilds
 		$this->allanVarianceArray = $sumArray;
