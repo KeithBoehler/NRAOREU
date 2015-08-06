@@ -29,17 +29,11 @@ class allanCalc {
 		//$averageArray = $this->ultimateAverage($rawData, $maxK);
 		//die("your goodish");
 		for ($i = 0; $i < $maxK; ++$i) {
-			$start = microtime(true);
-			// every cycle in this loop should generate one point. 
-			//$organizedArray = $this->dataOrganizer($rawData, $i + 1);
-			//$averageOrgArray = $this->averageOrgArray($organizedArray);
-			
-			$averageArray = $this->ultimateAverage($rawData, $i + 1);
-			
+		
+			$averageArray = $this->ultimateAverage($rawData, $i + 1);	
+			$normalizer = 1 / (2 * (count($averageArray) - 1) * pow($mu, 2));
 			$sumArray[$i] = $normalizer * $this->unnormalizedAVAR($averageArray); // This makes the normalized AllanVar
-			$time_elapsed_secs = microtime(true) - $start;
-			//echo $time_elapsed_secs . "<br>";
-			echo memory_get_usage(). "\t" . $time_elapsed_secs . "\t" .  $i ."<br>";			
+
 		}
 		// fill datafeilds
 		$this->allanVarianceArray = $sumArray;
@@ -143,11 +137,10 @@ class allanCalc {
 	 * this and the number of sampels that there are.
 	 */
 	private function timeGenerator($minTime = 0.05, $maxTime = 300) {
-		$timeIncrement = $maxTime / $this->N;
 		for ($i = 0; $i < count($this->allanVarianceArray); ++$i) {
 			// Each cycle should generate one value of time. Starting from min time. 
 			$this->integrationTimeArray[$i] = $minTime;
-			$minTime += $timeIncrement; 
+			$minTime += $this->tou0; 
 		}
 		$this->integrationTimeArray;
 		$this->maxTime = $maxTime;

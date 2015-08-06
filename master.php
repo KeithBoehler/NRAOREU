@@ -1,5 +1,4 @@
 <?php
-echo "Start <br>";
 /*
  *  This is the master php file that will be calling on the classes 
  *  deffer all all working code to other classes \
@@ -33,15 +32,23 @@ if (isset($fileName)) {
 		$fileWorkerObj = new fileWorker($fileName, $tmpName);
 		$arrayWorkerObj = new arrayWorker();
 		$allanCalculatorObj = new allanCalc();
-		//
+		// prep arrays 
 		$IFOArray = $fileWorkerObj->toArray($delimiter);
 		$amplidudeColumnIndex = 1; // so that later we can make more dynamic
-		$amplitudeArray = $arrayWorkerObj->arrayColumn($IFOArray, $amplidudeColumnIndex);
-		
+		$amplitudeArray = $arrayWorkerObj->arrayColumn($IFOArray, $amplidudeColumnIndex);		
 		// crunch numbers with allanCalc
 		$allanVarArray = $allanCalculatorObj->allanVariance($amplitudeArray);
 		$timeArray = $allanCalculatorObj->getTimeArray(); //$allanCalculatorObj->timeGenerator(0.05, 300);
-		$xyArray = $arrayWorkerObj->arrayMerger($allanVarArray, $timeArray, FALSE);
+		$VLA = $arrayWorkerObj->arrayMerger($allanVarArray, $timeArray, FALSE);
+		// writing AVAR to text 
+		$fileWorkerObj->toTextville($VLA);
+		// Getting the plot stuff 
+		echo "plotting";
+		$GNUcaller = new plotter($fileWorkerObj);
+		$randName = $fileWorkerObj->getRandomName();
+		$saveAdress = $fileWorkerObj->getOutputAdress();
+		$xyTable = $saveAdress . $randName;
+		$GNUcaller->testingDefults($xyTable);
 	}
 	else
 		echo "Please choose a file. <br>";

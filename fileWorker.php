@@ -11,21 +11,21 @@ class fileWorker
 	private $outPutAdress;
 	private $plotURL;
 	private $opsFile;
+	private $randomFile;
+	private $timeStamp;
 	
 	public function __construct($dataFile, $tmpName) {
-		
+		$this->timeStamp = time();
 		require(site_get_config_main());
 		// establish defult directories 
-		$masterDir = $main_write_directory . "master/"; // this will be the "root Dir"
-		$this->uploadAdress= $masterDir . "uploads/"; // here is where user input will be placed 
-		$this->outPutAdress = $masterDir . "outputs/"; // here is where final files will be placed 
+		$masterDir = $main_write_directory; // this will be the "root Dir"
+		$this->uploadAdress= $masterDir; // here is where user input will be placed 
+		$this->outPutAdress = $masterDir; // here is where final files will be placed 
 		$this->plotURL = $main_url_directory;
 		$this->opsFile = $masterDir;
 		// make if dir does not exits 
-		if(!file_exists($masterDir) || !file_exists($this->uploadAdress) || !file_exists($this->outPutAdress)) {
+		if(!file_exists($masterDir)) {
 			mkdir($masterDir);
-			mkdir($this->outPutAdress);
-			mkdir($this->uploadAdress);
 		}
 		// upload the file that will be plotted
 		$this->dataName = $dataFile;
@@ -66,11 +66,19 @@ class fileWorker
 	 * @param string $base: This is a choosen name for a file. 
 	 * @return string $string: This returned string is the name that will be used as a file name. Consistes of base name and a time stamp to diffferenciate different files 
 	 */
-	private function namesGenerator($base)
-	{
-		$timeStamp = time();
-		return $string = $base . $timeStamp;
-	}// end of GNUplotNames
+	private function namesGenerator() {
+		$string = "AVAR" . $this->timeStamp . ".txt";
+		$this->randomFile = $string;
+		return $string;
+	}
+	
+	/**
+	 * To make names for plot files 
+	 */
+	public function plotNameGenerator() {
+		$string = "plot" . $this->timeStamp . ".png";
+		return $string;
+	}
 	
 	/**
 	 * 
@@ -78,25 +86,35 @@ class fileWorker
 	 * @param unknown $plottingArray: This is the array that we wish to write to a .txt file.
 	 * @return string
 	 */
-	public function toTextville($adress, $plottingArray)
-	{
+	public function toTextville($plottingArray)	{
 		echo "Starting to write <br>";
-
-		$newFile = $adress . "refinedData.txt";
+		$randomName = $this->namesGenerator();
+		$newFile = $this->outPutAdress . $randomName;
 		$fh = fopen($newFile, 'w');
 		if (!file_exists($newFile))
-			die("ERORR: File not made. Class fileWorker. Method GNUPlotScrip");
-		$first = TRUE;
-		for ($i = 1; $i < count($plottingArray); ++$i)
-		{
-			for($j = 0; $j < count($plottingArray[$i]); ++$j)
-			{
-				if ($first)
+			die("ERORR: File not made. Class fileWorker. ");
+//  		$first = TRUE;
+// 		for ($i = 1; $i < count($plottingArray); ++$i) {
+// 			$first = TRUE;
+// 			for($j = 0; $j < count($plottingArray[$i]); ++$j) {
+// 				if (!$first)
+// 					fwrite($fh, ";");
+// 				else  
+// 					$first = FALSE;
+// 				fwrite($fh, $plottingArray[$i][$j]);
+// 			//	fwrite($fh, "\r\n");
+// 			}
+// 		}
+		foreach ($plottingArray as $row) {
+			$first = TRUE;
+			foreach ($row as $item) {
+				if(!$first) 	
 					fwrite($fh, ";");
 				else 
 					$first = FALSE;
-				fwrite($fh, $plottingArray[$i][$j]);
+				fwrite($fh, $item);
 			}
+			fwrite($fh, "\r\n");
 		}
 		fclose($fh);
 		echo "data written for gnuplot <br>";
@@ -114,16 +132,14 @@ class fileWorker
 		return $this->opsFile;
 	}
 
-	public function getSaveAdress()	{
-		return $this->saveAdress;
+	public function getOutputAdress()	{
+		return $this->outPutAdress;
 	}	
 	public function getUploadAdress() {
 		return $this->uploadAdress;
 	}
-	public function getRandName() {
-		$b = $this->dataAdress;
-		$n = $this->namesGenerator($b);
-		return $n;
+	public function getRandomName() {
+		return $this->randomFile;
 	}
 
 

@@ -1,24 +1,20 @@
 <?php
-
-
-
-class plotter
-{
+class plotter{ 
+	
 	private $opsFileAdressAndName;
 	private $plot_path;
 	private $plotName;
 	private $URL;
 	
-	public function __construct()
-	{
-		//require 'fileWorker.php';
-		$fileWorkerObj = new fileWorker();
-		$path = $fileWorkerObj->getAdress();
-		$plot_URL = $fileWorkerObj->getURL();
+	public function __construct(&$fileWorkerReff) {
+//		include 'fileWorker.php';
+//		$fileWorkerObj = new fileWorker();
+//		$path = $fileWorkerReff->getOutputAdress();
+		$plot_URL = $fileWorkerReff->getURL();
 		$this->URL = $plot_URL;
-		$this->opsFileAdressAndName = $path . "cmd.txt";
-		$this->plot_path = $path;
-		$this->plotName = "plot.png";
+		$this->opsFileAdressAndName = $fileWorkerReff->getOutputAdress() . "cmd.txt";
+		$this->plot_path = $fileWorkerReff->getOutputAdress();
+		$this->plotName = $fileWorkerReff->plotNameGenerator();
 		
 	}// end constructor
 	
@@ -27,27 +23,32 @@ class plotter
 	 * @return string: Not needed jsut here for testing
 	 * This writes the data file needed to execute GNUPlot 
 	 */
-	public function testingDefults()
-	{
+	public function testingDefults($xyTable) {
 		require(site_get_config_main());
-		$opsFileAdressAndName =$this->opsFileAdressAndName;
-		$plotName = $this->plotName;
-		$plot_path = $this->plot_path;
-		$test = $plot_path . $plotName;
-		echo $plot_path . "<br>";
-		$f = fopen($opsFileAdressAndName, "w");
+		$outAdress = $this->plot_path;
+		$plotPath = $this->slashReplace($outAdress . $this->plotName);
+		$xyTable = $this->slashReplace($xyTable);
+		$f = fopen($this->opsFileAdressAndName, "w");
 		fwrite($f, "set terminal png" . "\r\n");
-		fwrite($f, "set output '" . $test . "'\r\n");
+		fwrite($f, 'set xlabel "integrations"'  . "\r\n" );
+		fwrite($f, 'set ylabel "Allan Variance"' . "\r\n" );
+		fwrite($f, 'set title "Stability Plot"' . "\r\n" );
+		fwrite($f, 'set logscale' . "\r\n" );
+		fwrite($f, "set output '" . $plotPath . "'\r\n");
 		fwrite($f, 'set datafile separator ";"' . "\r\n" );
-		fwrite($f, "plot '".$opsFileAdressAndName ."' using 2:3 with linespoints" . "\r\n");
-		fclose($f);		
-		
-		
-		$plot_URL = $this->URL . $plotName;
-		system("$GNUPLOT $opsFileAdressAndName");
-		echo $plot_URL . "<br>";
-		echo  "<img src = '$plot_URL'><br>";
-		return "Why is it not working? :'( <br>";
+		fwrite($f, "plot '". $xyTable ."' using 1:2 with linespoints" . "\r\n");
+		fclose($f);				
+		$img = $this->slashReplace($this->URL . $this->plotName);
+		echo "<br>";
+		echo $img . "<br>";
+		$x = $this->slashReplace($this->opsFileAdressAndName);
+		echo $x . "<br>";
+		system("$GNUPLOT $x");
+		echo  "<img src = '$img'><br>";
+	}
+	
+	private function slashReplace($string) {
+		return str_replace("\\" , "/" , $string);	
 	}
 	
 
